@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  codeserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GIT_EMAIL: ${GIT_EMAIL}
+        GIT_NAME: ${GIT_NAME}
+    image: codercom/code-server:latest
+    container_name: codeserver
+    restart: always
+    ports:
+      - 8443:8443
+    volumes:
+      - ${PROJECT_DIR}:/home/coder/project

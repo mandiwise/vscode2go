@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  codeserver:
+    environment:
+      PASSWORD: ${PASSWORD}
+      DOMAIN: ${DOMAIN}
+    command: --allow-http --disable-telemetry --cert /etc/letsencrypt/live/${DOMAIN}/fullchain.pem --cert-key /etc/letsencrypt/live/${DOMAIN}/privkey.key
+  nginx:
+    image: nginx:1.15-alpine
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    command: >
+      /bin/sh -c 'envsubst "$$DOMAIN" < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf &&
+      while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

@@ -1,0 +1,5 @@
+version: "3"
+
+services:
+  codeserver:
+    command: --allow-http --disable-telemetry --no-auth

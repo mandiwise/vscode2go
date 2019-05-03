@@ -1,0 +1,31 @@
+# editor
+
+.vscode/
+
+# misc
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*[Tt]humbs.db
+*.Trashes
+
+# environment
+
+.env 
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# config
+
+config/certbot/
+config/extensions
+config/fonts/*
+!config/fonts/instructions.md
+config/nginx/default.conf
+config/settings.json
