@@ -52,7 +52,7 @@ USER coder
 # Install extensions specified by unique identifier in extensions file
 RUN ./install-extensions.sh ${VSCODE_EXTENSIONS_DIR} ${EXTENSIONS_FILE} \
   # Clean up
-  && rm -f extensions install-extensions.sh
+  && rm -f Extensionsfile install-extensions.sh
 
 # Set some basic config options for Git
 RUN git config --global user.name "${GIT_NAME}" \
