@@ -24,7 +24,7 @@ ehthumbs.db
 # config
 
 config/certbot/
-config/extensions
+config/Extensionsfile
 config/fonts/*
 !config/fonts/instructions.md
 config/nginx/default.conf
