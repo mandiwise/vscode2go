@@ -7,14 +7,14 @@ ENV GIT_EMAIL $GIT_EMAIL
 ENV GIT_NAME $GIT_NAME
 
 # Set extensions file and dir paths as environment variables
-ENV EXTENSIONS_FILE "/home/coder/extensions"
+ENV EXTENSIONS_FILE "/home/coder/Extensionsfile"
 ENV VSCODE_EXTENSIONS_DIR "/home/coder/.local/share/code-server/extensions"
 
 # Change into the home directory
 WORKDIR /home/coder
 
-# Copy the extensions script and file
-COPY scripts/install-extensions.sh config/extensions* ./
+# Copy the extensions script and file (if it exists)
+COPY scripts/install-extensions.sh config/Extensionsfile* ./
 
 # Copy the settings.json file
 COPY --chown=coder:coder config/settings.json /home/coder/.local/share/code-server/User/
