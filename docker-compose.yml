@@ -11,7 +11,8 @@ services:
     image: codercom/code-server:latest
     container_name: codeserver
     restart: always
-    ports:
-      - 8443:8443
     volumes:
       - ${PROJECT_DIR}:/home/coder/project
+volumes:
+  codeserver:
+    driver: local
