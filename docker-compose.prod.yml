@@ -7,7 +7,8 @@ services:
       DOMAIN: ${DOMAIN}
     expose:
       - 8443
-    command: --allow-http --disable-telemetry
+    # @TODO Passing the dir arg at the end is hack (fix if workingdir arg becomes available)
+    command: "--allow-http --disable-telemetry /home/coder/project"
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx
@@ -15,7 +16,7 @@ services:
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
     ports:
-      - "80:80"
+      - 80:80
     environment:
       DOMAIN: ${DOMAIN}
     command: >
