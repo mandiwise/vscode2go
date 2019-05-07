@@ -1,7 +1,12 @@
 server {
     listen 80;
     listen [::]:80;
+    listen 443 ssl;
+
     server_name ${DOMAIN};
+
+    ssl_certificate /etc/nginx/ssl/codeserver.crt;
+    ssl_certificate_key /etc/nginx/ssl/codeserver.key;
 
     location / {
        proxy_pass   http://codeserver:8443;

@@ -7,18 +7,21 @@ services:
       DOMAIN: ${DOMAIN}
     expose:
       - 8443
-    volumes:
-      - ./config/certs:/certs:ro
+    # volumes:
+    #   - ./config/certs:/certs:ro
     # @TODO Passing the dir arg at the end is hack (fix if workingdir arg becomes available)
-    command: --allow-http --disable-telemetry --cert=/certs/codeserver.crt --cert-key=/certs/codeserver.key /home/coder/project
+    # command: --allow-http --disable-telemetry --cert=/certs/codeserver.crt --cert-key=/certs/codeserver.key /home/coder/project
+    command: --allow-http --disable-telemetry /home/coder/project
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx
     restart: always
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
+      - ./config/certs:/etc/nginx/ssl:ro
     ports:
       - 80:80
+      - 443:443
     environment:
       DOMAIN: ${DOMAIN}
     command: >
