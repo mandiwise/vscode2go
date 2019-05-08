@@ -23,7 +23,7 @@ ehthumbs.db
 
 # config
 
-config/certs
+config/certbot
 config/Extensionsfile
 config/fonts/*
 !config/fonts/instructions.md

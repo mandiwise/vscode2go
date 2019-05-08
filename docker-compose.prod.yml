@@ -7,10 +7,6 @@ services:
       DOMAIN: ${DOMAIN}
     expose:
       - 8443
-    # volumes:
-    #   - ./config/certs:/certs:ro
-    # @TODO Passing the dir arg at the end is hack (fix if workingdir arg becomes available)
-    # command: --allow-http --disable-telemetry --cert=/certs/codeserver.crt --cert-key=/certs/codeserver.key /home/coder/project
     command: --allow-http --disable-telemetry /home/coder/project
   nginx:
     image: nginx:1.15-alpine
@@ -18,14 +14,23 @@ services:
     restart: always
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
-      - ./config/certs:/etc/nginx/ssl:ro
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
     ports:
       - 80:80
       - 443:443
     environment:
       DOMAIN: ${DOMAIN}
     command: >
-      /bin/sh -c 'envsubst "$$DOMAIN" < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && 
-      nginx -g "daemon off;"'
+      /bin/sh -c "envsubst '$$DOMAIN' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf &&
+      while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
     depends_on:
       - codeserver
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
