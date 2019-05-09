@@ -68,7 +68,7 @@ ionutvmi.path-autocomplete
 PKief.material-icon-theme
 ```
 
-Creating and `Extensionsfile` is a great way to install extensions directly from the official VS Code Marketplace, rather than from the [custom marketplace](https://github.com/cdr/code-server#extensions) supported out-of-the-box by code-server.
+Creating an `Extensionsfile` is also a great way to install extensions directly from the official VS Code Marketplace, rather than from the [custom marketplace](https://github.com/cdr/code-server#extensions) supported out-of-the-box by code-server.
 
 To get a list of the extensions you currently have installed in your desktop VS Code app, simply run `code --list-extensions` on that computer and copy/paste into your `Extensionsfile`.
 
@@ -92,14 +92,14 @@ At a minimum add an empty `{}` into this file, even if you don't want any other 
 
 ### Configure TLS (required for remote set-up only)
 
-This repo comes with a bash script to automatically request certificates from Let's Encrypt. Run the following commands from the root of this repo:
+This repo comes with a bash script to automatically request certificates from Let's Encrypt. Run the following commands from the root of this repo, and pass in appropriate arguments:
 
 ```bash
 $ chmod +x scripts/init-letsencrypt.sh
 $ sudo ./scripts/init-letsencrypt.sh mydomain.com bob@email.com
 ```
 
-This script will take a few moments to run because it will have to create your `nginx` container (and it's `codeserver` container dependency) in order for the certificate validation to work.
+This script will take a few moments to run because it will have to create your `nginx` container (and it's `codeserver` container dependency) in order for the certificate validation to work in the `certbot` container.
 
 ## Usage
 
@@ -115,7 +115,7 @@ To start the project locally, run:
 $ PROJECT_DIR="../myapp" docker-compose up -d
 ```
 
-Please note that if you are running VSCode2Go locally (with the above command) the `no-auth` option is configured with code-server for convenience sake. Do not do this on remote server!
+Please note that if you are running VSCode2Go locally (with the above command) the `no-auth` option is configured with code-server for convenience sake. **Do not do this on remote server!**
 
 When you want to open up a new project, simply run:
 
@@ -123,6 +123,8 @@ When you want to open up a new project, simply run:
 $ docker container stop certbot codeserver nginx
 $ PROJECT_DIR="../myapp2" docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
+
+Happy coding! 🚀
 
 ## References
 
