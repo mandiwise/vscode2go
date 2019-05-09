@@ -1,8 +1,8 @@
 # VSCode2Go
 
-VSCode2Go is an enhanced implementation of [code-server](https://github.com/cdr/code-server/) that allows you to easily launch VS Code in a browser with pre-installed extensions, custom fonts, user settings, and a custom domain with HTTPS configured using an nginx reverse proxy and Let's Encrypt.
+VSCode2Go is an enhanced implementation of [code-server](https://github.com/cdr/code-server/) that allows you to easily launch VS Code in a browser with pre-installed extensions, custom fonts, user settings, Git, and a custom domain with HTTPS configured using an nginx reverse proxy and Let's Encrypt.
 
-Essentially, it's a low-fuss option for running VS Code on a remote server and accessing it in browser (e.g. when coding on an iPad Pro, etc.), but in such a way that it allows you to emulate your typical desktop VS Code set-up as closely as you'd like to.
+Essentially, it's a low-fuss option for running VS Code on a remote server and accessing it in browser (e.g. when coding on an iPad Pro, etc.), but in a way that allows you to emulate your typical desktop VS Code set-up as closely as you'd like to.
 
 ## Installation
 
@@ -19,7 +19,9 @@ Essentially, it's a low-fuss option for running VS Code on a remote server and a
 
 Once you've decided whether you want to run VSCode2Go locally or remotely and you have installed all of the prerequisite dependencies, then you can clone this repo somewhere sensible on your system:
 
-`$ git clone https://github.com/mandiwise/vscode2go.git`
+```bash
+$ git clone https://github.com/mandiwise/vscode2go.git
+```
 
 ## Set-up
 
@@ -29,11 +31,13 @@ The production version of VSCode2Go is meant to be used with a custom domain (Le
 
 And if you've configured a firewall with [UFW](https://help.ubuntu.com/community/UFW) you'll need to make sure you open up ports 80 and 443 too:
 
-`$ sudo ufw allow proto tcp from any to any port 80,443`
+```bash
+$ sudo ufw allow proto tcp from any to any port 80,443
+```
 
 Next, you'll need to configure a few things so that VS Code launches exactly as you like it. These instructions apply for both local/development and remote/production installations, with exceptions noted.
 
-**Add an `.env` file (required):**
+### Add an `.env` file (required)
 
 First, create a `.env` file in the root of the repo and add these variables with appropriate values:
 
@@ -48,11 +52,11 @@ _Important! Do not wrap your string variables in quotes._
 
 Note that if you are only running VSCode2Go locally, you do not need to add the `DOMAIN` or `PASSWORD` variables.
 
-**Add fonts (optional):**
+### Add fonts (optional)
 
 Add any fonts you'd like to use in your editor into the `config/fonts` directory. You can organize font files into sub-directories inside the `fonts` directory if you prefer.
 
-**Add an Extensionsfile (optional):**
+### Add an Extensionsfile (optional)
 
 If you want to pre-install extensions in VS Code before it launches, add an `Extensionsfile` to the `config` directory and list each of the extensions by their unique identifiers on separate lines. For example:
 
@@ -68,7 +72,7 @@ Creating and `Extensionsfile` is a great way to install extensions directly from
 
 To get a list of the extensions you currently have installed in your desktop VS Code app, simply run `code --list-extensions` on that computer and copy/paste into your `Extensionsfile`.
 
-**Add user settings (required):**
+### Add user settings (required)
 
 You must create a `settings.json` file.
 
@@ -86,7 +90,7 @@ At a minimum add an empty `{}` into this file, even if you don't want any other 
 }
 ```
 
-**Configure TLS (required for remote set-up):**
+### Configure TLS (required for remote set-up only)
 
 This repo comes with a bash script to automatically request certificates from Let's Encrypt. Run the following commands from the root of this repo:
 
@@ -107,9 +111,18 @@ This command assumes that you have a `myapp` directory at the same level in your
 
 To start the project locally, run:
 
-`$ PROJECT_DIR="../myapp" docker-compose up -d`
+```bash
+$ PROJECT_DIR="../myapp" docker-compose up -d
+```
 
-Please note that if you are running VSCode2Go locally the `no-auth` option is configured with code-server. Do not do this on remote server!
+Please note that if you are running VSCode2Go locally (with the above command) the `no-auth` option is configured with code-server for convenience sake. Do not do this on remote server!
+
+When you want to open up a new project, simply run:
+
+```bash
+$ docker container stop certbot codeserver nginx
+$ PROJECT_DIR="../myapp2" docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
 
 ## References
 
