@@ -96,7 +96,7 @@ This repo comes with a bash script to automatically request certificates from Le
 
 ```bash
 $ chmod +x scripts/init-letsencrypt.sh
-$ sudo ./scripts/init-letsencrypt.sh mydomain.com bob@email.com
+$ ./scripts/init-letsencrypt.sh mydomain.com bob@email.com
 ```
 
 This script will take a few moments to run because it will have to create your `nginx` container (and it's `codeserver` container dependency) in order for the certificate validation to work in the `certbot` container.
